@@ -61,13 +61,11 @@
 
                     <br>
                   
-                  <div class="btn-group col-md-12" role="group" aria-label="Button group with spacing" >
+                  <div class="btn-group col-md-12" role="group" aria-label="Button group with spacing">
                     <button id="btngravar" type="button" onclick="gravar();" class="btn btn-success" ><span class="glyphicon glyphicon-ok"></span> Gravar</button>
                     <button id="btngravarEdicao" type="button" class="btn btn-success" style="color: #fff; border-radius: 2px; display:none;" onClick="gravarEdicao()">Salvar Alteração</button>
                     <button id="btnLimpar" type="reset" class="btn btn-warning" style="color: #fff; border-radius: 2px;">Limpar</button>
-
                     <button id="btnCancelar" type="reset" class="btn btn-danger" style="color: #fff; border-radius: 2px; display:none;" onClick="cancelarEdit()">Cancelar Edição</button>
-
                   </div>
                   
                 </form>
@@ -240,6 +238,7 @@
     document.getElementById('nomePessoa').value = pessoaEdicao.nome;
     document.getElementById('cpf').value = pessoaEdicao.cpf;
     document.getElementById('telefone').value = pessoaEdicao.telefone;
+
     idEdicao = pessoaEdicao.id;
   }
 
@@ -260,9 +259,16 @@
   }
 
   function gravarEdicao() {
+   
   const nomePessoa = document.getElementById('nomePessoa').value;
   const cpfPessoa = document.getElementById('cpf').value;
   const telefonePessoa = document.getElementById('telefone').value;
+
+ 
+  if (nomePessoa === '' || cpfPessoa === '' || telefonePessoa === '') {
+   alert('Por favor, preencha todos os campos obrigatórios.');
+  return;
+  }
 
   const pessoaExistente = arrayPessoas.find(pessoa => pessoa.id === idEdicao);
   
