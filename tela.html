@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.min.css" />
     <script src="https://kit.fontawesome.com/a9b77e0cc7.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.mask/1.14.10/jquery.mask.min.js"></script>
     <title id="informacaoTela">Tela de Cadastro</title>
 </head>
 <body>
@@ -21,7 +22,7 @@
     <section class="vh-100 gradient-custom">
       <div class="container py-5 h-100">
         <div class="row justify-content-center align-items-center h-100">
-          <div class="col-6">
+          <div class="col-md-6 col-sm-12">
             <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
               <div class="card-body p-4 p-md-5">
 
@@ -59,9 +60,9 @@
                     </div>
                   </div> 
 
-                    <br>
+                  <br>
                   
-                  <div class="btn-group col-md-12" role="group" aria-label="Button group with spacing">
+                  <div class="btn-group col-md-12" role="group" aria-label="Button group with spacing" >
                     <button id="btngravar" type="button" onclick="gravar();" class="btn btn-success" ><span class="glyphicon glyphicon-ok"></span> Gravar</button>
                     <button id="btngravarEdicao" type="button" class="btn btn-success" style="color: #fff; border-radius: 2px; display:none;" onClick="gravarEdicao()">Salvar Alteração</button>
                     <button id="btnLimpar" type="reset" class="btn btn-warning" style="color: #fff; border-radius: 2px;">Limpar</button>
@@ -73,7 +74,7 @@
             </div>
           </div>     
 
-          <div class="col-6">
+          <div class="col-md-6 col-sm-12">
             <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
               <div class="card-body p-4 p-md-5">
                 <h3 class="tab.Cadastro" style="text-align: center;">Pessoas Cadastradas</h3>
@@ -98,11 +99,11 @@
   let idEdicao = 0;
 
   $( document ).ready(function() {
-      debugger;
-
       arrayPessoas = [];
 
       gerarTabela();
+
+      $('#cpf').mask('000.000.000-00');
   });
 
   function gravar() {
@@ -113,7 +114,15 @@
     const pessoaExistente = arrayPessoas.find(pessoa => pessoa.cpf === cpfPessoa);
 
     if (nomePessoa === '' || cpfPessoa === '' || telefonePessoa === '') {
-      alert('Por favor, preencha todos os campos obrigatórios.');
+      Swal.fire({
+        text: 'Por favor, preencha todos os campos!',
+        icon: 'warning',
+        timer: 5000,
+        timerProgressBar: true,
+        toast: true, 
+        position: 'top-end', 
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -151,7 +160,6 @@
   }
   
   function gerarTabela() {
-    debugger;
       table = new DataTable('#TablePessoas', {
         responsive: true,
         pageLength: 4,
@@ -164,7 +172,8 @@
         language: {
                   "sEmptyTable": "Nenhum dado disponível na tabela",
                   "sInfoEmpty": "",
-                  "sInfoFiltered": "(filtrados de MAX registros no total)",
+                  "sInfo": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+                  "sInfoFiltered": "(filtrados de _MAX_ registros no total)",
                   "sInfoPostFix": "",
                   "sInfoThousands": ".",
                   "sLengthMenu": "",
@@ -197,26 +206,39 @@
   }
 
   function ExcluirPessoa(idCounter) {
-    Swal.fire({
-      title: 'Tem certeza?',
-      text: 'Você realmente deseja excluir esta pessoa?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        arrayPessoas = arrayPessoas.filter(pessoa => pessoa.id !== idCounter);
 
-        table.clear();
-        table.destroy();
-        gerarTabela();
+    if (idCounter != idEdicao){   
+      Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você realmente deseja excluir esta pessoa?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          arrayPessoas = arrayPessoas.filter(pessoa => pessoa.id !== idCounter);
 
-        Swal.fire('Excluído!', 'A pessoa foi removida com sucesso.', 'success');
-      }
+          table.clear();
+          table.destroy();
+          gerarTabela();
+
+          Swal.fire('Excluído!', 'A pessoa foi removida com sucesso.', 'success');
+        }
       });
+    } else {
+      Swal.fire({
+        text: 'A pessoa selecionada está sendo editada, cancele ou salve a edição para poder exclui-lá!',
+        icon: 'warning',
+        timer: 5000,
+        timerProgressBar: true,
+        toast: true, 
+        position: 'top-end', 
+        showConfirmButton: false
+      });
+    }
   }
 
   function editarPessoa(idCounter){
