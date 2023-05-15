@@ -1,7 +1,7 @@
 # Projeto solicitado pela empresa Supera Sistemas para avaliação de conhecimentos.
 
 ## Utilizado para o desenvolvimento:
-* #### HTML, CSS, JavaScript, Jquery e Bootstrap;
+* #### HTML, CSS, JavaScript, Jquery e Bootstrap.
 
 ## :computer: Sobre a tela: 
 * #### O usuário deve informar nome, CPF e telefone (esses campos foram definidos como obrigatórios para que seja possível gerar um cadastro); 
