@@ -1,6 +1,6 @@
 # Projeto solicitado pela empresa Supera Sistemas para avaliação de conhecimentos.
 
-## :wrench: Feramentas utilizadas:
+## :wrench: Ferramentas utilizadas:
 * #### Utilizei meus conhecimentos em HTML juntamente com Bootstrap e JavaScript;
 
 ## :computer: Sobre a tela: 
